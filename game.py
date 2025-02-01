@@ -16,16 +16,29 @@ class AlienInvasion:
     def run_game(self):
         """Запускаем цикл игры"""
         while True:
-            # Следим за клавой и мышкой
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
-            # Назначаем цвет фона
-            self.screen.fill(self.settings.bg_color)
-            self.ship.blitme()
-            # Последний прорисованный экран
-            pygame.display.flip()
+            self._check_events()
+            self.ship.update()
+            self._update_screen()
 
+    def _check_events(self):
+        """Обрабатывает нажатия клавиш и события мыши."""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    self.ship.moving_right = True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    self.ship.moving_right = False
+
+
+    def _update_screen(self):
+        # Назначаем цвет фона
+        self.screen.fill(self.settings.bg_color)
+        self.ship.blitme()
+        # Последний прорисованный экран
+        pygame.display.flip()
 
 if __name__ == '__main__':
     # Создаем экземпляр класса
